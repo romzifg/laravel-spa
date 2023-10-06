@@ -60,9 +60,11 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(News $news)
+    public function edit(News $news, Request $request)
     {
-        //
+        return Inertia::render('EditNews', [
+            'my_news'   => $news->find($request->id)
+        ]);
     }
 
     /**
@@ -70,7 +72,13 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news)
     {
-        //
+        $news::where('author', auth()->user()->email)->update([
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'category'      => $request->category
+        ]);
+
+        return to_route('Dashboard')->with('message', 'success edit news');
     }
 
     /**

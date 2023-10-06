@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
 
@@ -99,6 +99,19 @@ export default function Dashboard({ auth, flash, my_news }) {
                                         <div className="card-actions justify-end">
                                             <div className="badge badge-outline">
                                                 {el.category}
+                                            </div>
+                                            <div className="badge badge-outline">
+                                                <Link
+                                                    href={route("edit.news")}
+                                                    method="get"
+                                                    data={{ id: el.id }}
+                                                    as="button"
+                                                >
+                                                    edit
+                                                </Link>
+                                            </div>
+                                            <div className="badge badge-outline">
+                                                delete
                                             </div>
                                         </div>
                                     </div>
