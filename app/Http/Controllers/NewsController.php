@@ -14,7 +14,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = new NewsCollection(News::paginate(6));
+        $news = new NewsCollection(News::OrderByDesc('id')->paginate(6));
 
         return Inertia::render('Homepage', [
             'title' => "Portal News",
@@ -36,7 +36,14 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $news = new News();
+        $news->title = $request->title;
+        $news->description = $request->description;
+        $news->category = $request->category;
+        $news->author = auth()->user()->email;
+        $news->save();
+
+        return redirect()->back()->with('message', 'success add news');
     }
 
     /**
@@ -44,7 +51,10 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        $myNews =  $news::where('author', auth()->user()->email)->get();
+        return Inertia::render('Dashboard', [
+            'my_news'  => $myNews
+        ]);
     }
 
     /**
